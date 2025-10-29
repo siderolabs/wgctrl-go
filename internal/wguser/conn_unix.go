@@ -19,6 +19,10 @@ func dial(device string) (net.Conn, error) {
 // find is the default implementation of Client.find.
 func find() ([]string, error) {
 	return findUNIXSockets([]string{
+		// It seems that /var/run is a common location between Linux and the
+		// BSDs, even though it's a symlink on Linux.
+		"/var/run/wireguard",
+		// Talos-specific location, see https://github.com/siderolabs/talos/issues/8514
 		"/system/wireguard-sock",
 	})
 }
